@@ -298,6 +298,20 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\JsBlogBusinessLayer\JsBlog.BusinessLayer.csproj">
+      <Project>{32D76E34-930A-4859-BA67-FA1E8A7FA818}</Project>
+      <Name>JsBlog.BusinessLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\JsBlogDataLayer\JsBlog.DataLayer.csproj">
+      <Project>{D2B2668A-B6F8-44A5-8BA5-93DF5C92EE15}</Project>
+      <Name>JsBlog.DataLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\JsBlogs.Model\JsBlog.Model.csproj">
+      <Project>{0268E19B-D747-4227-8930-1B63B38D6338}</Project>
+      <Name>JsBlog.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

@@ -7,35 +7,45 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-
+using JsBlogBusinessLayer;
+using JsBlogs.Model;
 
 namespace JsBlog.Controllers
 {
     public class BlogsController : ApiController
     {
+        
+        JsBlogBusinessLayer.BlogsBAL _blogBAL = new BlogsBAL();
         public readonly JsBlogDevelopmentEntities dbContext = new JsBlogDevelopmentEntities();
-        public IHttpActionResult PostBlog(Blog blog)
+        public IHttpActionResult PostBlog(BlogsDTO blog)
         {
             try
             {
+                
+
                 if (blog != null)
                 {
-                    JsBlogDevelopmentEntities _dbContext = new JsBlogDevelopmentEntities();
-                    Blog blogObject = new Blog()
-                    {
-                        Title = blog.Title,
-                        Content = blog.Content,
-                        CreatedBy = "jayasurya@gmail.com",
-                        CreatedOn = DateTime.UtcNow,
-                        ModifiedOn = null,
-                        ModifiedBy = null,
-                        IsActive = true,
-                        IsDeleted = false,
-                        DeletedOn = null
+                    var result = _blogBAL.PostBlogs(blog);
+                    //JsBlogDevelopmentEntities _dbContext = new JsBlogDevelopmentEntities();
+                    //Blog blogObject = new Blog()
+                    //{
+                    //    Title = blog.Title,
+                    //    Content = blog.Content,
+                    //    CreatedBy = "jayasurya@gmail.com",
+                    //    CreatedOn = DateTime.UtcNow,
+                    //    ModifiedOn = null,
+                    //    ModifiedBy = null,
+                    //    IsActive = true,
+                    //    IsDeleted = false,
+                    //    DeletedOn = null
 
-                    };
-                    _dbContext.Blogs.Add(blogObject);
-                    _dbContext.SaveChangesAsync();
+                    //};
+                    //_dbContext.Blogs.Add(blogObject);
+                    //_dbContext.SaveChangesAsync();
+                    if(result != null)
+                    {
+                        return Content(HttpStatusCode.OK, JToken.Parse(JsonConvert.SerializeObject(new { status = true, blog = blog  })));
+                    }
 
                 }
             }
