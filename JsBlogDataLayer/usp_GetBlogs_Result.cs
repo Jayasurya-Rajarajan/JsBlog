@@ -7,22 +7,19 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace JsBlog.Models
+namespace JsBlogDataLayer
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Blog
+    public partial class usp_GetBlogs_Result
     {
-        public long Id { get; set; }
+        public Nullable<long> RowNum { get; set; }
+        public Nullable<long> Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
         public string CreatedBy { get; set; }
-        public System.DateTime CreatedOn { get; set; }
-        public string ModifiedBy { get; set; }
-        public Nullable<System.DateTime> ModifiedOn { get; set; }
-        public bool IsActive { get; set; }
-        public Nullable<System.DateTime> DeletedOn { get; set; }
+        public Nullable<System.DateTime> CreatedOn { get; set; }
+        public Nullable<bool> IsActive { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
     }
 }

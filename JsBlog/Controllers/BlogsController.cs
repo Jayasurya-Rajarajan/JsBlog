@@ -1,5 +1,4 @@
-﻿using JsBlog.Models;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -16,7 +15,6 @@ namespace JsBlog.Controllers
     {
         
         JsBlogBusinessLayer.BlogsBAL _blogBAL = new BlogsBAL();
-        public readonly JsBlogDevelopmentEntities dbContext = new JsBlogDevelopmentEntities();
         public IHttpActionResult PostBlog(BlogsDTO blog)
         {
             try
@@ -56,27 +54,27 @@ namespace JsBlog.Controllers
             }
             return Content(HttpStatusCode.OK, JToken.Parse(JsonConvert.SerializeObject(new { status = true })));
         }
-
-        public IHttpActionResult GetBlogs()
+        public IHttpActionResult GetBlogs(long startNum, long endNum)
         {
             try
             {
-                var blogs = dbContext.Blogs.ToList();
-                Blog blog = new Blog();
-                List<Blog> blogsList = new List<Blog>();
-                foreach(var b in blogs)
-                {
-                    blog.Id = b.Id;
-                    blog.Title = b.Title;
-                    blog.Content = b.Content;
-                    blog.CreatedBy = b.CreatedBy;
-                    DateTime dt = Convert.ToDateTime(b.CreatedOn.ToString("G"));
-                    blog.CreatedOn = dt;
-                    blog.IsActive = b.IsActive;
-                    blogsList.Add(blog);
+                var blogList = _blogBAL.GetBlogs(startNum, endNum);
+                //var blogs = dbContext.Blogs.ToList();
+                //Blog blog = new Blog();
+                //List<Blog> blogsList = new List<Blog>();
+                //foreach(var b in blogs)
+                //{
+                //    blog.Id = b.Id;
+                //    blog.Title = b.Title;
+                //    blog.Content = b.Content;
+                //    blog.CreatedBy = b.CreatedBy;
+                //    DateTime dt = Convert.ToDateTime(b.CreatedOn.ToString("G"));
+                //    blog.CreatedOn = dt;
+                //    blog.IsActive = b.IsActive;
+                //    blogsList.Add(blog);
 
-                }
-                return Content(HttpStatusCode.OK, JToken.Parse(JsonConvert.SerializeObject(new { status = true, blogs = blogsList })));
+                //}
+                return Content(HttpStatusCode.OK, JToken.Parse(JsonConvert.SerializeObject(new { status = true, blogs = blogList })));
             }
             catch(Exception e)
             {

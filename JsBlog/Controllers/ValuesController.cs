@@ -1,5 +1,4 @@
-﻿using JsBlog.Models;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -25,38 +24,7 @@ namespace JsBlog.Controllers
         }
 
         // POST api/values
-        public IHttpActionResult PostBlog(Blog blog)
-        {
-            try
-            {
-                if(blog != null)
-                {
-                    JsBlogDevelopmentEntities _dbContext = new JsBlogDevelopmentEntities();
-                    Blog blogObject = new Blog()
-                    {
-                        Title = blog.Title,
-                        Content = blog.Content,
-                        CreatedBy = "jayasurya@gmail.com",
-                        CreatedOn = DateTime.UtcNow,
-                        ModifiedOn = null,
-                        ModifiedBy = null,
-                        IsActive = true,
-                        IsDeleted = false,
-                        DeletedOn = null
-
-                    };
-                    _dbContext.Blogs.Add(blogObject);
-                    _dbContext.SaveChangesAsync();
-                    
-                }
-            }
-            catch(Exception e)
-            {
-                return Content(HttpStatusCode.BadRequest, JToken.Parse(JsonConvert.SerializeObject(new { status = false, message= e.ToString() })));
-
-            }
-            return Content(HttpStatusCode.OK, JToken.Parse(JsonConvert.SerializeObject(new { status = true })));
-        }
+        
 
         // PUT api/values/5
         public void Put(int id, [FromBody] string value)

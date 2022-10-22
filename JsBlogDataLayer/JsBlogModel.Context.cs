@@ -12,6 +12,8 @@ namespace JsBlogDataLayer
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class JsBlogDevelopmentEntities : DbContext
     {
@@ -27,5 +29,18 @@ namespace JsBlogDataLayer
     
         public virtual DbSet<Blog> Blogs { get; set; }
         public virtual DbSet<UserDetail> UserDetails { get; set; }
+    
+        public virtual ObjectResult<usp_GetBlogs_Result> usp_GetBlogs(Nullable<long> startNum, Nullable<long> endNum)
+        {
+            var startNumParameter = startNum.HasValue ?
+                new ObjectParameter("StartNum", startNum) :
+                new ObjectParameter("StartNum", typeof(long));
+    
+            var endNumParameter = endNum.HasValue ?
+                new ObjectParameter("EndNum", endNum) :
+                new ObjectParameter("EndNum", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetBlogs_Result>("usp_GetBlogs", startNumParameter, endNumParameter);
+        }
     }
 }

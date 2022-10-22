@@ -13,7 +13,25 @@ namespace JsBlogBusinessLayer
         BlogsService _jsBlogService = new BlogsService();
         public async Task<Blog> PostBlogs(BlogsDTO blog)
         {
-            return await _jsBlogService.PostBlogs(blog);
+            try
+            {
+                return await _jsBlogService.PostBlogs(blog);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+        public List<Blog> GetBlogs(long startNum, long endNum)
+        {
+            try
+            {
+                return _jsBlogService.GetBlogs(startNum, endNum);
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
         }
     }
 }
