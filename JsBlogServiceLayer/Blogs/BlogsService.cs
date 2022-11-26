@@ -17,7 +17,7 @@ namespace JsBlogServiceLayer.Blogs
             _dbContext = new JsBlogDevelopmentEntities();
         }
 
-        public async Task<Blog> PostBlogs(BlogsDTO blog)
+        public Blog PostBlogs(BlogsDTO blog)
         {
             try
             {
@@ -34,11 +34,28 @@ namespace JsBlogServiceLayer.Blogs
                     DeletedOn = null
 
                 };
-                _dbContext.Blogs.Add(blogObject);
-                _ = await _dbContext.SaveChangesAsync();
-                return blogObject;
+
+                //var result = _dbContext.Blogs.Add(blogObject);
+                var result = _dbContext.usp_createBlogs(blogObject.Title, blogObject.Content, blogObject.CreatedBy,
+                    blogObject.CreatedOn, blogObject.DeletedOn, blogObject.IsActive, blogObject.IsDeleted,
+                    blogObject.ModifiedBy, blogObject.ModifiedOn);
+                //var rs = await _dbContext.SaveChangesAsync();
+                var returnResult = result.Select(p => new Blog
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    Content = p.Content,
+                    CreatedBy = p.CreatedBy,
+                    CreatedOn = p.CreatedOn,
+                    ModifiedOn = p.ModifiedOn,
+                    ModifiedBy = p.ModifiedBy,
+                    IsActive = p.IsActive,
+                    IsDeleted = p.IsDeleted,
+                    DeletedOn = p.DeletedOn
+                }).FirstOrDefault();
+                return returnResult;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw e;
             }
@@ -48,26 +65,26 @@ namespace JsBlogServiceLayer.Blogs
         {
             try
             {
-                var blogs = _dbContext.Blogs.ToList();
+                //var blogs = _dbContext.Blogs.ToList();
                 var blogsFromSp = _dbContext.usp_GetBlogs(startNum, endNum).ToList();
                 Blog blog = new Blog();
                 List<Blog> blogList = new List<Blog>();
                 foreach (var b in blogsFromSp)
                 {
-                    
-                    blog.Id = (long)b.Id;
-                    blog.Title = b.Title;
-                    blog.Content = b.Content;
-                    blog.CreatedBy = b.CreatedBy;
-                    //DateTime dt = Convert.ToDateTime(b.CreatedOn.HasValue? b.CreatedOn.ToString("G") : "<Not Available>");
-                    blog.CreatedOn = (DateTime)b.CreatedOn; 
-                    //blog.CreatedOn = dt;
-                    blog.IsActive = (bool)b.IsActive;
+                    blog = new Blog
+                    {
+                        Id= (long)b.Id,
+                        Title = b.Title,
+                        Content = b.Content,
+                        CreatedBy = b.CreatedBy,
+                        CreatedOn = (DateTime)b.CreatedOn,
+                        IsActive = (bool)b.IsActive,
+                    };
                     blogList.Add(blog);
                 }
                 return blogList;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw e;
             }

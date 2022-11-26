@@ -74,6 +74,9 @@
     <Compile Include="UserDetail.cs">
       <DependentUpon>JsBlogModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="usp_createBlogs_Result.cs">
+      <DependentUpon>JsBlogModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="usp_GetBlogs_Result.cs">
       <DependentUpon>JsBlogModel.tt</DependentUpon>
     </Compile>

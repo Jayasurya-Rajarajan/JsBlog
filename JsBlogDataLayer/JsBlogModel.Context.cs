@@ -42,5 +42,46 @@ namespace JsBlogDataLayer
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetBlogs_Result>("usp_GetBlogs", startNumParameter, endNumParameter);
         }
+    
+        public virtual ObjectResult<usp_createBlogs_Result> usp_createBlogs(string title, string content, string createdBy, Nullable<System.DateTime> createdOn, Nullable<System.DateTime> deletedOn, Nullable<bool> isActive, Nullable<bool> isDeleted, string modifiedBy, Nullable<System.DateTime> modifiedOn)
+        {
+            var titleParameter = title != null ?
+                new ObjectParameter("title", title) :
+                new ObjectParameter("title", typeof(string));
+    
+            var contentParameter = content != null ?
+                new ObjectParameter("content", content) :
+                new ObjectParameter("content", typeof(string));
+    
+            var createdByParameter = createdBy != null ?
+                new ObjectParameter("createdBy", createdBy) :
+                new ObjectParameter("createdBy", typeof(string));
+    
+            var createdOnParameter = createdOn.HasValue ?
+                new ObjectParameter("createdOn", createdOn) :
+                new ObjectParameter("createdOn", typeof(System.DateTime));
+    
+            var deletedOnParameter = deletedOn.HasValue ?
+                new ObjectParameter("deletedOn", deletedOn) :
+                new ObjectParameter("deletedOn", typeof(System.DateTime));
+    
+            var isActiveParameter = isActive.HasValue ?
+                new ObjectParameter("isActive", isActive) :
+                new ObjectParameter("isActive", typeof(bool));
+    
+            var isDeletedParameter = isDeleted.HasValue ?
+                new ObjectParameter("isDeleted", isDeleted) :
+                new ObjectParameter("isDeleted", typeof(bool));
+    
+            var modifiedByParameter = modifiedBy != null ?
+                new ObjectParameter("modifiedBy", modifiedBy) :
+                new ObjectParameter("modifiedBy", typeof(string));
+    
+            var modifiedOnParameter = modifiedOn.HasValue ?
+                new ObjectParameter("modifiedOn", modifiedOn) :
+                new ObjectParameter("modifiedOn", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_createBlogs_Result>("usp_createBlogs", titleParameter, contentParameter, createdByParameter, createdOnParameter, deletedOnParameter, isActiveParameter, isDeletedParameter, modifiedByParameter, modifiedOnParameter);
+        }
     }
 }

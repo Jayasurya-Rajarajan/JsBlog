@@ -32,7 +32,19 @@
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
           <Property Name="Designation" Type="nvarchar" MaxLength="250" />
           <Property Name="HeadLine" Type="nvarchar" MaxLength="250" />
+          <Property Name="GenderId" Type="bigint" />
         </EntityType>
+        <Function Name="usp_createBlogs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="title" Type="nvarchar" Mode="In" />
+          <Parameter Name="content" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="createdBy" Type="nvarchar" Mode="In" />
+          <Parameter Name="createdOn" Type="datetime" Mode="In" />
+          <Parameter Name="deletedOn" Type="datetime" Mode="In" />
+          <Parameter Name="isActive" Type="bit" Mode="In" />
+          <Parameter Name="isDeleted" Type="bit" Mode="In" />
+          <Parameter Name="modifiedBy" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="modifiedOn" Type="datetime" Mode="In" />
+        </Function>
         <Function Name="usp_GetBlogs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="StartNum" Type="bigint" Mode="In" />
           <Parameter Name="EndNum" Type="bigint" Mode="In" />
@@ -72,6 +84,7 @@
           <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Designation" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="HeadLine" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="GenderId" Type="Int64" />
         </EntityType>
         <EntityContainer Name="JsBlogDevelopmentEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Blogs" EntityType="Self.Blog" />
@@ -79,6 +92,17 @@
           <FunctionImport Name="usp_GetBlogs" ReturnType="Collection(JsBlogModel.usp_GetBlogs_Result)">
             <Parameter Name="StartNum" Mode="In" Type="Int64" />
             <Parameter Name="EndNum" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="usp_createBlogs" ReturnType="Collection(JsBlogModel.usp_createBlogs_Result)">
+            <Parameter Name="title" Mode="In" Type="String" />
+            <Parameter Name="content" Mode="In" Type="String" />
+            <Parameter Name="createdBy" Mode="In" Type="String" />
+            <Parameter Name="createdOn" Mode="In" Type="DateTime" />
+            <Parameter Name="deletedOn" Mode="In" Type="DateTime" />
+            <Parameter Name="isActive" Mode="In" Type="Boolean" />
+            <Parameter Name="isDeleted" Mode="In" Type="Boolean" />
+            <Parameter Name="modifiedBy" Mode="In" Type="String" />
+            <Parameter Name="modifiedOn" Mode="In" Type="DateTime" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="usp_GetBlogs_Result">
@@ -90,6 +114,19 @@
           <Property Type="DateTime" Name="CreatedOn" Nullable="true" Precision="23" />
           <Property Type="Boolean" Name="IsActive" Nullable="true" />
           <Property Type="Boolean" Name="IsDeleted" Nullable="true" />
+          <Property Type="Int64" Name="TotalBlogs" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="usp_createBlogs_Result">
+          <Property Type="Int64" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Title" Nullable="false" MaxLength="500" />
+          <Property Type="String" Name="Content" Nullable="false" />
+          <Property Type="String" Name="CreatedBy" Nullable="false" MaxLength="250" />
+          <Property Type="DateTime" Name="CreatedOn" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="DeletedOn" Nullable="true" Precision="23" />
+          <Property Type="Boolean" Name="IsActive" Nullable="false" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="true" />
+          <Property Type="String" Name="ModifiedBy" Nullable="true" MaxLength="250" />
+          <Property Type="DateTime" Name="ModifiedOn" Nullable="true" Precision="23" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -116,6 +153,7 @@
           <EntitySetMapping Name="UserDetails">
             <EntityTypeMapping TypeName="JsBlogModel.UserDetail">
               <MappingFragment StoreEntitySet="UserDetails">
+                <ScalarProperty Name="GenderId" ColumnName="GenderId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="EmailId" ColumnName="EmailId" />
@@ -138,6 +176,23 @@
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="TotalBlogs" ColumnName="TotalBlogs" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="usp_createBlogs" FunctionName="JsBlogModel.Store.usp_createBlogs">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="JsBlogModel.usp_createBlogs_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

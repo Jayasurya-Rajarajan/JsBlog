@@ -22,5 +22,6 @@ namespace JsBlogDataLayer
         public string Description { get; set; }
         public string Designation { get; set; }
         public string HeadLine { get; set; }
+        public Nullable<long> GenderId { get; set; }
     }
 }
