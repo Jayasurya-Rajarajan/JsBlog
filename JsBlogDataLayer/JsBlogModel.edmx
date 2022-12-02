@@ -48,6 +48,7 @@
         <Function Name="usp_GetBlogs" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="StartNum" Type="bigint" Mode="In" />
           <Parameter Name="EndNum" Type="bigint" Mode="In" />
+          <Parameter Name="TotalRecords" Type="int" Mode="InOut" />
         </Function>
         <EntityContainer Name="JsBlogModelStoreContainer">
           <EntitySet Name="Blogs" EntityType="Self.Blogs" Schema="dbo" store:Type="Tables" />
@@ -92,6 +93,7 @@
           <FunctionImport Name="usp_GetBlogs" ReturnType="Collection(JsBlogModel.usp_GetBlogs_Result)">
             <Parameter Name="StartNum" Mode="In" Type="Int64" />
             <Parameter Name="EndNum" Mode="In" Type="Int64" />
+            <Parameter Name="TotalRecords" Mode="InOut" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="usp_createBlogs" ReturnType="Collection(JsBlogModel.usp_createBlogs_Result)">
             <Parameter Name="title" Mode="In" Type="String" />
@@ -114,7 +116,6 @@
           <Property Type="DateTime" Name="CreatedOn" Nullable="true" Precision="23" />
           <Property Type="Boolean" Name="IsActive" Nullable="true" />
           <Property Type="Boolean" Name="IsDeleted" Nullable="true" />
-          <Property Type="Int64" Name="TotalBlogs" Nullable="true" />
         </ComplexType>
         <ComplexType Name="usp_createBlogs_Result">
           <Property Type="Int64" Name="Id" Nullable="false" />
@@ -176,7 +177,6 @@
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="TotalBlogs" ColumnName="TotalBlogs" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

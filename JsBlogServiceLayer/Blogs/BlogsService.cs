@@ -2,6 +2,7 @@
 using JsBlogs.Model;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,14 +62,16 @@ namespace JsBlogServiceLayer.Blogs
             }
         }
 
-        public List<Blog> GetBlogs(long startNum, long endNum)
+        public Tuple<List<Blog>, int> GetBlogs(long startNum, long endNum)
         {
             try
             {
                 //var blogs = _dbContext.Blogs.ToList();
-                var blogsFromSp = _dbContext.usp_GetBlogs(startNum, endNum).ToList();
+                ObjectParameter totalRecords = new ObjectParameter("totalRecords", typeof(int));
+                var blogsFromSp = _dbContext.usp_GetBlogs(startNum, endNum, totalRecords).ToList();
                 Blog blog = new Blog();
                 List<Blog> blogList = new List<Blog>();
+                int total = Convert.ToInt32(totalRecords.Value);
                 foreach (var b in blogsFromSp)
                 {
                     blog = new Blog
@@ -82,7 +85,8 @@ namespace JsBlogServiceLayer.Blogs
                     };
                     blogList.Add(blog);
                 }
-                return blogList;
+                return new Tuple<List<Blog>, int>(blogList, total);
+                //return blogList;
             }
             catch (Exception e)
             {

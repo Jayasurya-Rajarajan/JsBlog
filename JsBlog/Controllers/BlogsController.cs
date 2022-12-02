@@ -42,8 +42,11 @@ namespace JsBlog.Controllers
         {
             try
             {
-                var blogList = _blogBAL.GetBlogs(startNum, endNum);
-                return Content(HttpStatusCode.OK, JToken.Parse(JsonConvert.SerializeObject(new { status = true, data = blogList })));
+                var result = _blogBAL.GetBlogs(startNum, endNum);
+                var blogList = result.Item1;
+                var totalRecords = result.Item2;
+                
+                return Content(HttpStatusCode.OK, JToken.Parse(JsonConvert.SerializeObject(new { status = true, data = blogList, totalRecords = totalRecords })));
             }
             catch(Exception e)
             {

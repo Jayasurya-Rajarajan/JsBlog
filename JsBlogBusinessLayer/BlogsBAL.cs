@@ -22,7 +22,7 @@ namespace JsBlogBusinessLayer
                 throw e;
             }
         }
-        public List<Blog> GetBlogs(long startNum, long endNum)
+        public Tuple<List<Blog>, int> GetBlogs(long startNum, long endNum)
         {
             try
             {

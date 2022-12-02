@@ -30,7 +30,7 @@ namespace JsBlogDataLayer
         public virtual DbSet<Blog> Blogs { get; set; }
         public virtual DbSet<UserDetail> UserDetails { get; set; }
     
-        public virtual ObjectResult<usp_GetBlogs_Result> usp_GetBlogs(Nullable<long> startNum, Nullable<long> endNum)
+        public virtual ObjectResult<usp_GetBlogs_Result> usp_GetBlogs(Nullable<long> startNum, Nullable<long> endNum, ObjectParameter totalRecords)
         {
             var startNumParameter = startNum.HasValue ?
                 new ObjectParameter("StartNum", startNum) :
@@ -40,7 +40,7 @@ namespace JsBlogDataLayer
                 new ObjectParameter("EndNum", endNum) :
                 new ObjectParameter("EndNum", typeof(long));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetBlogs_Result>("usp_GetBlogs", startNumParameter, endNumParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<usp_GetBlogs_Result>("usp_GetBlogs", startNumParameter, endNumParameter, totalRecords);
         }
     
         public virtual ObjectResult<usp_createBlogs_Result> usp_createBlogs(string title, string content, string createdBy, Nullable<System.DateTime> createdOn, Nullable<System.DateTime> deletedOn, Nullable<bool> isActive, Nullable<bool> isDeleted, string modifiedBy, Nullable<System.DateTime> modifiedOn)
