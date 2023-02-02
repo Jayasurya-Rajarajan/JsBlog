@@ -6,6 +6,7 @@ using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity;
 
 
 namespace JsBlogServiceLayer.Blogs
@@ -35,7 +36,6 @@ namespace JsBlogServiceLayer.Blogs
                     DeletedOn = null
 
                 };
-
                 //var result = _dbContext.Blogs.Add(blogObject);
                 var result = _dbContext.usp_createBlogs(blogObject.Title, blogObject.Content, blogObject.CreatedBy,
                     blogObject.CreatedOn, blogObject.DeletedOn, blogObject.IsActive, blogObject.IsDeleted,
@@ -62,7 +62,7 @@ namespace JsBlogServiceLayer.Blogs
             }
         }
 
-        public Tuple<List<Blog>, int> GetBlogs(long startNum, long endNum)
+        public Tuple<List<Blog>, int> GetBlogs(int startNum, int endNum)
         {
             try
             {
@@ -89,6 +89,29 @@ namespace JsBlogServiceLayer.Blogs
                 //return blogList;
             }
             catch (Exception e)
+            {
+                throw e;
+            }
+        }
+        public bool DeleteBlog(int id)
+        {
+            try
+            {
+                Blog blogObj = new Blog();
+                blogObj = (
+                   from s in _dbContext.Blogs where s.Id == id select s
+                   ).FirstOrDefault();
+                if (blogObj != null)
+                {
+                    blogObj.IsActive = false;
+                    blogObj.DeletedOn = DateTime.UtcNow;
+                    blogObj.IsDeleted = true;
+                    _dbContext.Entry(blogObj).State = EntityState.Modified;
+                    _dbContext.SaveChangesAsync();
+                }
+                return true;
+            }
+            catch(Exception e)
             {
                 throw e;
             }

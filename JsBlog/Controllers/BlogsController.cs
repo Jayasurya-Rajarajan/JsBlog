@@ -38,7 +38,7 @@ namespace JsBlog.Controllers
             }
             return Content(HttpStatusCode.OK, JToken.Parse(JsonConvert.SerializeObject(new { status = true })));
         }
-        public IHttpActionResult GetBlogs(long startNum, long endNum)
+        public IHttpActionResult GetBlogs(int startNum, int endNum)
         {
             try
             {
@@ -46,11 +46,23 @@ namespace JsBlog.Controllers
                 var blogList = result.Item1;
                 var totalRecords = result.Item2;
                 
-                return Content(HttpStatusCode.OK, JToken.Parse(JsonConvert.SerializeObject(new { status = true, data = blogList, totalRecords = totalRecords })));
+                return Content(HttpStatusCode.OK, JToken.Parse(JsonConvert.SerializeObject(new { status = true, data = new { blogList, totalBlogs = totalRecords } })));
             }
             catch(Exception e)
             {
-                return Content(HttpStatusCode.ExpectationFailed, JToken.Parse(JsonConvert.SerializeObject(new { status = false, data = "Something went wrong" })));
+                return Content(HttpStatusCode.BadRequest, JToken.Parse(JsonConvert.SerializeObject(new { status = false, data = new { message = "Something went wrong", exception = e.ToString() } })));
+            }
+        }
+        public IHttpActionResult DeleteBlog(int id)
+        {
+            try
+            {
+                var result = _blogBAL.DeleteBlog(id);
+                return Content(HttpStatusCode.OK, JToken.Parse(JsonConvert.SerializeObject(new { status = true })));
+            }
+            catch(Exception e)
+            {
+                return Content(HttpStatusCode.BadRequest, JToken.Parse(JsonConvert.SerializeObject(new { status = false, data = new { message = "Something went wrong" } })));
             }
         }
 
